@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.gsli.its.manage.dao.NewsDao">
+     <insert id="save" parameterType="cn.edu.gsli.its.manage.entity.News">
+     	INSERT INTO its_news
+     	(id,type,newsType,link,title,subTitle,content,totalVisits,createdTime,modifiedTime,createdUser,modifiedUser)
+     	VALUES
+     	(NULL,#{type},#{newsType},#{link},#{title},#{subTitle},#{content},#{totalVisits},NOW(),NOW(),#{createdUser},#{modifiedUser})
+     </insert>
+     
+     <delete id="delete">
+     	DELETE FROM its_news
+     	WHERE id=#{id}
+     </delete>
+     
+    <select id="findById" resultType="cn.edu.gsli.its.manage.entity.News">
+    	SELECT * FROM its_news
+    	WHERE id=#{id}
+    </select>
+    
+    <update id="update" parameterType="cn.edu.gsli.its.manage.entity.News">
+    	UPDATE its_news
+  		SET type=#{type},
+  		newsType=#{newsType},
+  		link=#{link},
+  		title=#{title},
+  		subTitle=#{subTitle},
+  		content=#{content},
+  		modifiedTime=NOW(),
+  		modifiedUser=#{modifiedUser}	
+  		WHERE id=#{id}
+    </update>
+    
+    <select id="search" resultType="cn.edu.gsli.its.manage.entity.News">
+    	SELECT * FROM its_news
+    	<if test="search!=null">
+    	WHERE title LIKE CONCAT("%",#{search},"%")
+    	</if> 	
+		ORDER BY createdTime DESC 
+		LIMIT #{start},#{size}
+    </select>
+    <select id="searchCount" resultType="int">
+    	SELECT COUNT(*) FROM its_news
+    	<if test="search!=null">
+    	WHERE title LIKE CONCAT("%",#{search},"%")
+    	</if> 	
+    </select>
+    
+</mapper> 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.gsli.its.manage.dao.AuthDao">
+	
+	<select id="findAuthCount" resultType="int">
+		SELECT count(*) FROM its_teacher_auth
+		<if test="state!=null">		
+		WHERE state=#{state}
+		</if>
+	</select>
+	<select id="findAuth" resultType="cn.edu.gsli.its.manage.entity.Auth">
+		SELECT * FROM its_teacher_auth
+		<if test="state!=null">		
+		WHERE state=#{state}
+		</if>
+		LIMIT #{start},#{size}
+	</select>
+	<select id="findById" resultType="cn.edu.gsli.its.manage.entity.Auth">
+		SELECT * FROM its_teacher_auth
+		WHERE id=#{id}
+	</select>
+	<update id="dueWithAuth">
+		UPDATE its_teacher_auth
+		SET state=#{state},opinion=#{opinion},auditUser=#{user},auditTime=NOW()
+		WHERE id=#{id}
+	</update>
+	<update id="updateValidByUsername">
+		UPDATE its_users
+		SET valid=#{valid}
+		WHERE username=#{username}
+	</update>
+</mapper>
